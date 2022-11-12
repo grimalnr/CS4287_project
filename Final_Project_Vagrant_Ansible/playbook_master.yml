@@ -1,0 +1,47 @@
+---
+
+- name: "Play 1: Perform fact gathering on all VMs"
+  hosts: MyLocalVMs          # specified in the MyInventory file
+  collections:
+    - openstack.cloud
+  remote_user: vagrant       
+
+  gather_facts: yes          
+  become_user: yes            
+
+  tasks:    
+  - include_tasks: tasks/playbook_get_facts_local_vm.yml
+  - include_tasks: tasks/playbook_create_vm2_vm3.yml
+
+- name: "Play 2: Install dependencies"
+  hosts: MyChamVMs
+  remote_user: cc
+
+  - include_tasks: tasks/playbook_install_docker.yml
+  - include_tasks: tasks/playbook_install_kubernetes.yml
+
+- name: "Play 3: VM2 specific"
+  hosts: VM2
+  remote_user: cc
+  become: true
+
+  tasks:
+  - include_tasks: tasks/playbook_get_ip.yml
+  - include_tasks: tasks/playbook_create_cluster.yml 
+
+- name: "Play 4: VM3 specific"
+  hosts: VM3
+  remote_user: cc
+
+  tasks:
+  - include_tasks: tasks/playbook_join_cluster.yml 
+
+- name: "Play 5: VM2 specific"
+  hosts: VM2
+  remote_user: cc
+  become: true
+
+  tasks:
+  - include_tasks: tasks/playbook_taint_vm2.yml 
+
+...

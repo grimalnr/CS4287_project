@@ -1,0 +1,27 @@
+---
+  
+- name: "Create Cluster"
+  ansible.builtin.command: sudo kubeadm init --apiserver-advertise-address 10.56.3.156 --control-plane-endpoint 10.56.3.156 --node-name kubemaster --pod-network-cidr=10.244.0.0/16
+
+- name: "Suggested Command #1"
+  ansible.builtin.command: mkdir -p $HOME/.kube
+
+- name: "Suggested Command #2"
+  ansible.builtin.command: sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config
+  
+#- name: "Suggested Command #3"
+#  ansible.builtin.command: sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+- name: "Add Flannel for Pod Networking"
+  ansible.builtin.command: sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+  
+- name: "Get Join String"
+  ansible.builtin.command: kubeadm token create --print-join-command
+  register: result
+  
+- name: "Use Hostvar"
+  add_host:
+    name: "join"
+    value: "{{ result.stdout }}"
+
+...

@@ -1,0 +1,36 @@
+---
+
+  - name: Create VM2
+    openstack.cloud.server:
+      state: present
+      cloud: chameleon
+      name: VM2-ansible-group1
+      availability_zone: nova
+      image: CC-Ubuntu20.04
+      key_name: ABN_VM2
+      timeout: 200
+      flavor: m1.small
+      security_groups:
+        - default
+        - ENABLE_PING_SSH
+        - ENABLE_5984_COUCHDB
+      floating_ips:
+        - 129.114.26.44
+      
+  - name: Create VM3
+    openstack.cloud.server:
+      state: present
+      cloud: chameleon
+      name: VM3-ansible-group1
+      availability_zone: nova
+      image: CC-Ubuntu20.04
+      key_name: ABN_VM2
+      timeout: 200
+      flavor: m1.small
+      security_groups:
+        - default
+        - ENABLE_PING_SSH
+      floating_ips:
+        - 129.114.24.224
+
+...

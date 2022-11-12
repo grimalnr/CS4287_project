@@ -1,0 +1,18 @@
+---
+
+
+- name: "Get fixed ip"
+  ansible.builtin.command: hostname -I
+  register: result
+  
+- name: "Print fixed ip"
+  debug:
+    msg: "{{ result.stdout }}"
+
+    
+- name: "use hostvar"
+  add_host:
+    name: "myVar"
+    value: "{{ result.stdout | replace(' ','') }}"
+
+...

@@ -1,0 +1,58 @@
+---
+
+
+- name: Install curl 
+  become: yes
+  ansible.builtin.apt:
+    name: curl 
+
+- name: Update repositories cache 
+  become:  yes 
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Three
+  shell: sudo apt install -y apt-transport-https ca-certificates curl
+  become_user: yes
+
+- name: Four
+  shell: sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+  become_user: yes
+
+- name: Five
+  shell: echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+
+- name: Update repositories cache 
+  become:  yes 
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Install kubeadm 
+  become: yes
+  ansible.builtin.apt:
+    name: kubeadm
+
+- name: Install kubelet
+  become: yes
+  ansible.builtin.apt:
+    name: kubelet
+
+- name: Install kubectl
+  become: yes
+  ansible.builtin.apt:
+    name: kubectl
+
+- name: Install kubernetes-cni
+  become: yes
+  ansible.builtin.apt:
+    name: kubernetes-cni
+
+
+
+
+
+
+
+
+
+...

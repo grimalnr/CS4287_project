@@ -1,0 +1,9 @@
+---
+
+- name: "Print Join Command"
+  debug: msg="{{ hostvars['join']['value'] }}"
+
+- name : "Join Cluster"
+  ansible.builtin.command: sudo {{ hostvars['join']['value'] }}
+
+...

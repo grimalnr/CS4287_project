@@ -1,0 +1,6 @@
+---
+  
+- name: "Taint VM2"
+  ansible.builtin.command: sudo kubectl taint nodes kubemaster node-role.kubernetes.io/control-plane:NoSchedule-
+
+...
